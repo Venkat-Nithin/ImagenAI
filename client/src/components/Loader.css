@@ -1,0 +1,19 @@
+.spinner {
+  display: inline-block;
+  width: 2.5rem;  /* Tailwind w-10 = 40px */
+  height: 2.5rem; /* Tailwind h-10 = 40px */
+  margin-right: 0.5rem; /* Tailwind mr-2 = 8px */
+  color: #e5e7eb;  /* Tailwind text-gray-200 */
+  fill: #6469ff;
+  animation: spin 1s linear infinite;
+}
+
+/* Equivalent of Tailwind's animate-spin */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

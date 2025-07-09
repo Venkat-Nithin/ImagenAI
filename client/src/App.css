@@ -1,0 +1,44 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #e6ebf4;
+}
+
+@media screen and (min-width: 640px) {
+  .header {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.logo {
+  width: 7rem; /* Tailwind's w-28 = 112px */
+  object-fit: contain;
+}
+
+.create-button {
+  font-family: 'Inter var', sans-serif;
+  font-weight: 500;
+  background-color: #6469ff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem; /* Tailwind's rounded-md */
+  text-decoration: none;
+}
+
+.main-wrapper {
+  width: 100%;
+  background-color: #f9fafe;
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 73px);
+}
+
+@media screen and (min-width: 640px) {
+  .main-wrapper {
+    padding: 2rem;
+  }
+}

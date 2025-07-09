@@ -1,0 +1,76 @@
+.home-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.home-title {
+  font-weight: 800;
+  color: #222328;
+  font-size: 32px;
+}
+
+.home-description {
+  margin-top: 0.5rem;
+  color: #666e75;
+  font-size: 14px;
+  max-width: 500px;
+}
+
+.search-form {
+  margin-top: 4rem;
+}
+
+.results-section {
+  margin-top: 2.5rem;
+}
+
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-results {
+  font-weight: 500;
+  color: #666e75;
+  font-size: 20px;
+  margin-bottom: 0.75rem;
+}
+
+.search-term {
+  color: #222328;
+}
+
+.no-results {
+  margin-top: 1.25rem;
+  font-weight: bold;
+  color: #6469ff;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.card-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+
+/* Breakpoints */
+@media screen and (min-width: 480px) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 640px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

@@ -1,0 +1,45 @@
+.form-field-wrapper {
+  margin-bottom: 1rem;
+}
+
+.form-label-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #111827; /* Tailwind's text-gray-900 */
+}
+
+.surprise-button {
+  font-weight: 600;
+  font-size: 0.75rem;
+  background-color: #ececf1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.form-input {
+  background-color: #f9fafb; /* Tailwind's bg-gray-50 */
+  border: 1px solid #d1d5db;  /* Tailwind's border-gray-300 */
+  color: #111827;             /* Tailwind's text-gray-900 */
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  outline: none;
+  padding: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #6469ff;
+  box-shadow: 0 0 0 1px #6469ff;
+}
