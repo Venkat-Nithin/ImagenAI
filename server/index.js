@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://imagen-ai-psi.vercel.app'], // ← add your frontend URL here
+  origin: ['http://localhost:5173', 'https://imagen-ai-uwx2.vercel.app'],
   credentials: true,
 }));
 
