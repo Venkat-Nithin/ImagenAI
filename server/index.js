@@ -9,9 +9,9 @@ import dalleRoutes from './routes/dalleRoutes.js';
 dotenv.config();
 
 const app = express();
+
 app.use(cors({
-  origin: 'https://imagen-ai-psi.vercel.app',
-  methods: ['GET', 'POST'],
+  origin: ['http://localhost:5173', 'https://imagen-ai-psi.vercel.app'], // ← add your frontend URL here
   credentials: true,
 }));
 
