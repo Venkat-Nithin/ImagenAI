@@ -1,17 +1,13 @@
 import React from 'react';
-
 import { download } from '../assets';
 import { downloadImage } from '../utils';
-import './Card.css'; // ⬅️ Import the CSS
+import './Card.css';
 
 const Card = ({ _id, name, prompt, photo }) => (
   <div className="card">
-    <img
-      className="card-image"
-      src={photo}
-      alt={prompt}
-    />
-    <div className="card-hover-content">
+    <img className="card-image" src={photo} alt={prompt} />
+
+    <div className="card-info">
       <p className="card-prompt">{prompt}</p>
 
       <div className="card-footer">
