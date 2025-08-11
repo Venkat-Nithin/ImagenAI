@@ -1,4 +1,4 @@
-# AI Image Generation App
+# Imagen 2.0 - AI Image Generation App
 
 A full-stack AI image generation application that leverages Stable Diffusion via Hugging Face or Replicate to create visually stunning images from user prompts.  
 Built with **React.js**, **Node.js**, **Express**, and **MongoDB**.
