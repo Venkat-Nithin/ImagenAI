@@ -9,7 +9,7 @@
 
 .card-image {
   width: 100%;
-  display: block;
+  height: 250px; /* fixed height */
   object-fit: cover;
   border-bottom: 1px solid #eee;
 }

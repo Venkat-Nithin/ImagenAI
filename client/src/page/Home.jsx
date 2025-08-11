@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Card, FormField, Loader } from '../components';
+import { Card, Loader } from '../components';
 import './Home.css';
 import { BASE_URL } from '../config';
 
@@ -9,17 +9,15 @@ const RenderCards = ({ data, title }) => {
   if (data?.length > 0) {
     return data.map((post) => <Card key={post._id} {...post} />);
   }
-
   return <h2 className="no-results">{title}</h2>;
 };
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
-  const [allPosts, setAllPosts] = useState(null);
-
-  const [searchText, setSearchText] = useState('');
-  const [searchTimeout, setSearchTimeout] = useState(null);
-  const [searchedResults, setSearchedResults] = useState(null);
+  const [allPosts, setAllPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [users, setUsers] = useState([]);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -32,7 +30,13 @@ const Home = () => {
       });
       if (response.ok) {
         const result = await response.json();
-        setAllPosts(result.data.reverse());
+        const posts = result.data.reverse();
+        setAllPosts(posts);
+        setFilteredPosts(posts);
+
+        // Get unique user list for filter
+        const uniqueUsers = [...new Set(posts.map((post) => post.name))];
+        setUsers(uniqueUsers);
       }
     } catch (err) {
       alert(err);
@@ -45,20 +49,15 @@ const Home = () => {
     fetchPosts();
   }, []);
 
-  const handleSearchChange = (e) => {
-    clearTimeout(searchTimeout);
-    setSearchText(e.target.value);
+  const handleUserFilter = (e) => {
+    const user = e.target.value;
+    setSelectedUser(user);
 
-    setSearchTimeout(
-      setTimeout(() => {
-        const searchResult = allPosts.filter(
-          (item) =>
-            item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-            item.prompt.toLowerCase().includes(searchText.toLowerCase())
-        );
-        setSearchedResults(searchResult);
-      }, 500)
-    );
+    if (user === '') {
+      setFilteredPosts(allPosts);
+    } else {
+      setFilteredPosts(allPosts.filter((post) => post.name === user));
+    }
   };
 
   return (
@@ -73,15 +72,22 @@ const Home = () => {
         </Link>
       </div>
 
-      <div className="search-form">
-        <FormField
-          labelName="Search posts"
-          type="text"
-          name="text"
-          placeholder="Search something..."
-          value={searchText}
-          handleChange={handleSearchChange}
-        />
+      {/* User Filter */}
+      <div className="filter-form">
+        <label htmlFor="userFilter" className="filter-label">Filter by User:</label>
+        <select
+          id="userFilter"
+          value={selectedUser}
+          onChange={handleUserFilter}
+          className="filter-select"
+        >
+          <option value="">All Users</option>
+          {users.map((user) => (
+            <option key={user} value={user}>
+              {user}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="results-section">
@@ -90,20 +96,12 @@ const Home = () => {
             <Loader />
           </div>
         ) : (
-          <>
-            {searchText && (
-              <h2 className="search-results">
-                Showing Results for <span className="search-term">{searchText}</span>:
-              </h2>
-            )}
-            <div className="card-grid">
-              {searchText ? (
-                <RenderCards data={searchedResults} title="No Search Results Found" />
-              ) : (
-                <RenderCards data={allPosts} title="No Posts Yet" />
-              )}
-            </div>
-          </>
+          <div className="card-grid">
+            <RenderCards
+              data={filteredPosts}
+              title="No Posts Found"
+            />
+          </div>
         )}
       </div>
     </section>
