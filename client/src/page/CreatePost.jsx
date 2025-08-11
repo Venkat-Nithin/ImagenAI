@@ -7,7 +7,6 @@ import { FormField, Loader } from '../components';
 import './CreatePost.css';
 import { BASE_URL } from '../config';
 
-
 const CreatePost = () => {
   const navigate = useNavigate();
 
@@ -18,7 +17,7 @@ const CreatePost = () => {
   });
 
   const [generatingImg, setGeneratingImg] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [savingPost, setSavingPost] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,58 +27,69 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt });
   };
 
+  // Function 1: Generate image only
   const generateImage = async () => {
-    if (form.prompt) {
-      try {
-        setGeneratingImg(true);
-        const response = await fetch(`${BASE_URL}/dalle`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: form.prompt }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setForm({
-            ...form,
-            photo: `data:image/jpeg;base64,${data.photo}`,
-          });
-        } else {
-          alert(data.error || 'Failed to generate image');
-        }
-      } catch (err) {
-        alert(err);
-      } finally {
-        setGeneratingImg(false);
-      }
-    } else {
+    if (!form.prompt) {
       alert('Please provide a prompt.');
+      return;
+    }
+
+    try {
+      setGeneratingImg(true);
+
+      const response = await fetch(`${BASE_URL}/dalle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: form.prompt }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Image generation failed');
+      }
+
+      setForm((prev) => ({
+        ...prev,
+        photo: `data:image/jpeg;base64,${data.photo}`,
+      }));
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setGeneratingImg(false);
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Function 2: Share post to DB
+  const sharePost = async () => {
+    if (!form.name || !form.prompt || !form.photo) {
+      alert('Please provide your name, a prompt, and generate an image first.');
+      return;
+    }
 
-    if (form.prompt && form.photo) {
-      setLoading(true);
-      try {
-        const response = await fetch(`${BASE_URL}/post`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...form }),
-        });
+    try {
+      setSavingPost(true);
 
-        await response.json();
-        alert('Shared successfully!');
-        navigate('/');
-      } catch (err) {
-        alert(err);
-      } finally {
-        setLoading(false);
+      const saveResponse = await fetch(`${BASE_URL}/post`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          prompt: form.prompt,
+          photo: form.photo.split(',')[1], // remove base64 header
+        }),
+      });
+
+      if (!saveResponse.ok) {
+        throw new Error('Failed to save image to the database');
       }
-    } else {
-      alert('Please generate an image before sharing.');
+
+      alert('Image shared successfully!');
+      navigate('/');
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSavingPost(false);
     }
   };
 
@@ -92,7 +102,7 @@ const CreatePost = () => {
         </p>
       </div>
 
-      <form className="create-form" onSubmit={handleSubmit}>
+      <div className="create-form">
         <FormField
           labelName="Your Name"
           type="text"
@@ -135,23 +145,26 @@ const CreatePost = () => {
           )}
         </div>
 
-        <div className="btn-group">
+        <div className="button-row">
           <button
             type="button"
             onClick={generateImage}
             className="btn-generate"
+            disabled={generatingImg}
           >
-            {generatingImg ? 'Generating...' : 'Generate Image'}
+            {generatingImg ? 'Generating...' : 'Generate'}
           </button>
 
           <button
-            type="submit"
+            type="button"
+            onClick={sharePost}
             className="btn-share"
+            disabled={savingPost}
           >
-            {loading ? 'Sharing...' : 'Share with Community'}
+            {savingPost ? 'Sharing...' : 'Share'}
           </button>
         </div>
-      </form>
+      </div>
     </section>
   );
 };

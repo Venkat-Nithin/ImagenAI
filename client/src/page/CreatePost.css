@@ -56,7 +56,7 @@
   justify-content: center;
 }
 
-.btn-group {
+.button-row {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -71,7 +71,7 @@
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, opacity 0.2s ease;
 }
 
 .btn-generate {
@@ -79,7 +79,7 @@
   color: white;
 }
 
-.btn-generate:hover {
+.btn-generate:hover:not(:disabled) {
   background-color: #4338ca;
 }
 
@@ -88,6 +88,12 @@
   color: white;
 }
 
-.btn-share:hover {
+.btn-share:hover:not(:disabled) {
   background-color: #059669;
+}
+
+.btn-generate:disabled,
+.btn-share:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
